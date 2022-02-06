@@ -17,7 +17,9 @@ public class ToDoManager {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public ToDo getById(long id) {
+
         String sql = "SELECT * FROM todo WHERE id = " + id;
+
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -34,6 +36,7 @@ public class ToDoManager {
     }
 
     private ToDo getToDoFromResultSet(ResultSet resultSet) {
+
         try {
             return ToDo.builder()
                     .id(resultSet.getLong(1))
@@ -53,14 +56,15 @@ public class ToDoManager {
     }
 
     public boolean create(ToDo toDo) {
+
         String sql = "INSERT INTO todo(title,deadline,status,user_id) VALUES(?,?,?,?)";
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, toDo.getTitle());
-            if(toDo.getDeadline() != null){
+            if (toDo.getDeadline() != null) {
                 preparedStatement.setString(2, sdf.format(toDo.getDeadline()));
-            }else {
+            } else {
                 preparedStatement.setString(2, null);
             }
             preparedStatement.setString(3, toDo.getStatus().name());
@@ -79,8 +83,11 @@ public class ToDoManager {
     }
 
     public List<ToDo> getAllToDosByUser(long userId) {
+
         String sql = "SELECT * FROM todo WHERE user_id = " + userId;
+
         List<ToDo> toDos = new ArrayList<>();
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -88,6 +95,7 @@ public class ToDoManager {
             while (resultSet.next()) {
                 toDos.add(getToDoFromResultSet(resultSet));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,8 +104,11 @@ public class ToDoManager {
 
 
     public List<ToDo> getAllToDosByUserAndStatus(long userId, ToDoStatus status) {
+
         String sql = "SELECT * FROM todo WHERE user_id = ? AND status = ?";
+
         List<ToDo> toDos = new ArrayList<>();
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, userId);
@@ -107,6 +118,7 @@ public class ToDoManager {
             while (resultSet.next()) {
                 toDos.add(getToDoFromResultSet(resultSet));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,18 +126,9 @@ public class ToDoManager {
     }
 
     public boolean update(long id, ToDoStatus status) {
-//        String sql = "UBDATE TODO SET status = '" + status.name() + "' WHERE id = " + id;
-//        try {
-//            Statement statement = connection.createStatement();
-//            statement.executeUpdate(sql);
-//
-//            return true;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
 
         String sql = "UPDATE todo SET status = '" + status.name() + "' WHERE id = " + id;
+
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
@@ -137,7 +140,9 @@ public class ToDoManager {
     }
 
     public boolean delete(long id) {
+
         String sql = "DELETE FROM todo WHERE id = " + id;
+
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);

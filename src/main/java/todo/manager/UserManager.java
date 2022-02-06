@@ -12,7 +12,9 @@ public class UserManager {
     private Connection connection = DBConnectionProvider.getInstance().getConnection();
 
     public User getById(long id) {
+
         String sql = "SELECT * FROM user WHERE id = " + id;
+
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -29,6 +31,7 @@ public class UserManager {
     }
 
     private User getUserFromResultSet(ResultSet resultSet) {
+
         try {
             return User.builder()
                     .id(resultSet.getLong("id"))
@@ -44,7 +47,9 @@ public class UserManager {
     }
 
     public User getByEmailAndPassword(String email, String password) {
+
         String sql = "SELECT * FROM user WHERE email  = ? AND password = ?";
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, email);
@@ -54,6 +59,7 @@ public class UserManager {
             if (resultSet.next()) {
                 return getUserFromResultSet(resultSet);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,6 +67,7 @@ public class UserManager {
     }
 
     public boolean register(User user) {
+
         String sql = "INSERT INTO user(name,surname,email,password) VALUES(?,?,?,?)";
 
         try {
@@ -72,6 +79,7 @@ public class UserManager {
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
             if (resultSet.next()) {
                 user.setId(resultSet.getLong(1));
             }
@@ -83,7 +91,9 @@ public class UserManager {
     }
 
     public User getByEmail(String email) {
+
         String sql = "SELECT * FROM user WHERE email  = ?";
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, email);
@@ -99,8 +109,11 @@ public class UserManager {
     }
 
     public List<User> getAllUsers() {
+
         String sql = "SELECT * FROM user";
+
         List<User> users = new ArrayList<>();
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();

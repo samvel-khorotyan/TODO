@@ -71,13 +71,13 @@ public class ToDoMain implements Commands {
                 if (userManager.register(user)) {
                     System.out.println("USER WAS SUCCESSFULLY ADDED");
                 } else {
-                    System.out.println("SOMETHING WENT WRONG!");
+                    System.err.println("SOMETHING WENT WRONG!");
                 }
             } else {
-                System.out.println("user already exists");
+                System.err.println("user already exists");
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("WRONG DATA!");
+            System.err.println("WRONG DATA!");
         }
     }
 
@@ -91,10 +91,10 @@ public class ToDoMain implements Commands {
                 currentUser = user;
                 loginSuccess();
             } else {
-                System.out.println("WRONG EMAIL OR PASSWORD");
+                System.err.println("WRONG EMAIL OR PASSWORD");
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("WRONG DATA!");
+            System.err.println("WRONG DATA!");
         }
     }
 
@@ -126,13 +126,16 @@ public class ToDoMain implements Commands {
                     printToDos(toDoManager.getAllToDosByUser(currentUser.getId()));
                     break;
                 case MY_TODO_LIST:
-                    printToDos(toDoManager.getAllToDosByUserAndStatus(currentUser.getId(), ToDoStatus.TODO));;
+                    printToDos(toDoManager.getAllToDosByUserAndStatus(currentUser.getId(), ToDoStatus.TODO));
+                    ;
                     break;
                 case MY_IN_PROGRESS_LIST:
-                    printToDos(toDoManager.getAllToDosByUserAndStatus(currentUser.getId(), ToDoStatus.IN_PROGRESS));;
+                    printToDos(toDoManager.getAllToDosByUserAndStatus(currentUser.getId(), ToDoStatus.IN_PROGRESS));
+                    ;
                     break;
                 case MY_FINISHED_LIST:
-                    printToDos(toDoManager.getAllToDosByUserAndStatus(currentUser.getId(), ToDoStatus.FINISHED));;
+                    printToDos(toDoManager.getAllToDosByUserAndStatus(currentUser.getId(), ToDoStatus.FINISHED));
+                    ;
                     break;
                 case CHANGE_TODO_STATUS:
                     changeToDoStatus();
@@ -141,7 +144,7 @@ public class ToDoMain implements Commands {
                     deleteToDo();
                     break;
                 default:
-                    System.out.println("WRONG COMMAND!");
+                    System.err.println("WRONG COMMAND!");
             }
         }
     }
@@ -166,17 +169,17 @@ public class ToDoMain implements Commands {
                 }
             } catch (IndexOutOfBoundsException e) {
             } catch (ParseException e) {
-                System.out.println("PLEASE INPUT DATE BY THIS FORMAT:yyyy-MM-dd HH:mm:ss");
+                System.err.println("PLEASE INPUT DATE BY THIS FORMAT:yyyy-MM-dd HH:mm:ss");
             }
             toDo.setStatus(ToDoStatus.TODO);
             toDo.setUser(currentUser);
             if (toDoManager.create(toDo)) {
                 System.out.println("TODO WAS ADDED");
             } else {
-                System.out.println("SOMETHING WENT WRONG");
+                System.err.println("SOMETHING WENT WRONG");
             }
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("WRONG DATA");
+            System.err.println("WRONG DATA");
         }
     }
 
@@ -191,7 +194,7 @@ public class ToDoMain implements Commands {
         if (byId.getUser().getId() == currentUser.getId()) {
             toDoManager.delete(id);
         } else {
-            System.out.println("WRONG ID");
+            System.err.println("WRONG ID");
         }
     }
 
@@ -210,10 +213,10 @@ public class ToDoMain implements Commands {
             if (toDoManager.update(id, status)) {
                 System.out.println("STATUS WAS CHANGED");
             } else {
-                System.out.println("SOMETHING WENT WRONG");
+                System.err.println("SOMETHING WENT WRONG");
             }
         } else {
-            System.out.println("WRONG ID");
+            System.err.println("WRONG ID");
         }
     }
 }
